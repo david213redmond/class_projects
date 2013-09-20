@@ -1,0 +1,12 @@
+Basic examples
+v0d,v3d,v0u   --> input
+v0d,v3d,v2d,v1u --> 6
+v7u,v0d,v3d,v0u  --> 5
+v0d,v3d,v0u --> 0
+v0u,v3d,v0d --> 20
+v7d,v3d,v0u --> 2
+v1d,v2u,v6d,v3u,v4d --> 24
+
+Advanced Examples
+ M(john1, john2) = 45
+ M(john1, john3) = 212

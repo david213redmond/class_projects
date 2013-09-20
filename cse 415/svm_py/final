@@ -1,0 +1,100 @@
+import math
+import random
+K_matrix = []
+omegaTx = []                    
+X = []
+y = []
+a = []
+b = 0
+n = 0
+C = 1                                       #constant, weight for loss function. KKT boundary.
+TOL = 0.0001                                #tolerance.                                          
+rho = 100                                   #kernel width 
+epsilon = pow(10,-3)			    #KKT condition is fulfilled within epsilon.
+
+def dot_product(x1,x2):
+    if len(x1) == len(x2):
+        dot = 0
+        for i in range(0,len(x1)):
+            dot+=x1[i]*x2[i]
+        return dot
+    else:
+        "There's an error when doing dot product of: "+ x1 +" and "+ x2
+
+def vector_e_add(x1,x2):
+    if len(x1) == len(x2):
+        result = [0]*len(x1)
+        for i in range(0,len(result)):
+            result=x1[i]+x2[i]
+        return result
+    else:
+        "There's an error when doing dot product of: "+x1+" and "+x2	
+
+def kernel(x1,x2):
+    global rho
+    norm_square = dot_product(x1,x1) - 2*dot_product(x1,x2) + dot_product(x2,x2)
+    return math.exp(-0.5 * norm_square/pow(rho,2))
+
+#Storing a Kernel matrix lookup table for fast future access.
+#n: how many data examples are there.
+def create_K_matrix(n):
+    global K_matrix
+    K_matrix = [[1]*n]*n
+    for i in range(0,n):
+        for j in range(0,n):
+            K_matrix[i][j] = kernel(X[i],X[j])
+            
+#n: how many data examples are there.
+def update_omegaTx(n):
+    global omegaTx
+    omegaTx = [0]*n  
+    for k in range(0,n):
+        for i in range(0,n):
+            omegaTx[k] = omegaTx[k] + a[i] * y[i] * K_matrix[i][k]
+
+def init_alphas(n):
+    global a
+    global C
+    for i in range(0,n):
+        a.append(random.random()*C) #random initialization of a, a in [0,C]
+        
+def update_W(n):
+    tempSum = 0
+    W = 0
+    for i in range(0,n):
+        for j in range(0,n):
+            tempSum= tempSum + y[i]*y[j]*a[i]*a[j]*K_matrix[i][j]
+        W= W + a[i]
+    W = W - 0.5 * tempSum
+    return W
+
+def
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

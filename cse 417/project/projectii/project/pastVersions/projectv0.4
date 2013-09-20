@@ -1,0 +1,172 @@
+import math
+
+class Pixel:
+	row = 0
+	column = 0
+	rgb = []
+	edges = []
+	bkEdges = []
+	 
+	def __init__(self, r, c, rgbColors):
+		self.row = r 
+		self.column = c
+		self.rgb = rgbColors
+		self.edges = []
+		self.bkEdges = []
+	
+	def addEdge(self, edge):
+		self.edges.append(edge)
+
+	def getRed(self):
+		return self.rgb[0]
+
+	def getGreen(self):
+		 return self.rgb[1]
+
+	def getBlue(self):
+		return self.rgb[2]	
+
+
+class Edge:
+	p1 = Pixel
+	p2 = Pixel
+	capacity = 0
+	forwardEdge = 0
+
+	def __init__(self, pixel1, pixel2, cap):
+		self.p1 = pixel1
+		self.p2 = pixel2
+		self.capacity = cap
+		self.forwardEdge = cap
+	 
+	def __str__(self):
+		return "[" + str(self.p1) + " - " + str(self.p2) + "]"
+
+
+'MAIN PROGRAM'
+
+ED = []
+EDO = []
+
+'location to image'
+PATH = 'D:\\project\\ladyliberty\\test.jpg'
+
+pmOpenImage(1, PATH)
+
+'Matrix of the image in PATH as a nested list of rows of pixels inside'
+'a list for the whole image. Pixels in the rows are further represented'
+'as a list of three values, the rgb value of a pixel.'
+h = pmGetImageHeight(1)
+w = pmGetImageWidth(1)
+
+pixels = []
+
+for i in range(w):
+	for j in range(h):
+		pixels.append(Pixel(i, j, [ pmGetPixel(1, j, i)[0], pmGetPixel(1, j, i)[1], pmGetPixel(1, j, i)[2] ] ))
+
+
+'edges connecting the source node to each pixel [i.e. the chance that the given pixel is part of Statue of Liberty]'
+'and the edges connecting each pixel to the sink [i.e. the chance that the given pixel is not part of ll]'
+for i in range(len(pixels)):
+	ed = math.sqrt((pixels[i].getRed() - 87)**2 + (pixels[i].getGreen() - 120)**2 + (pixels[i].getBlue() - 118)**2)
+	 
+	'-1 is source; -2 is sink'
+	s_i = Edge(-1, pixels[i], 250-int(ed))
+	i_t = Edge(pixels[i], -2, int(ed))
+
+	pixels[i].edges.append(s_i)
+	pixels[i].edges.append(i_t)
+
+	ED.append(s_i)
+
+
+'Create all the neighboring left edges as edges[2]'
+for i in range(len(pixels)):
+	if(i % w != 0):
+		euclidian = math.sqrt( (pixels[i].getRed() - pixels[i-1].getRed()) ** 2 + (pixels[i].getGreen() - pixels[i-1].getGreen()) ** 2 + (pixels[i].getBlue() - pixels[i-1].getBlue()) ** 2 ) 
+		pixels[i].addEdge(Edge(pixels[i], pixels[i-1], 255-int(euclidian)))
+		pixels[i-1].bkEdge.append( Edge( pixels[i-1], pixels[i], 255-int(euclidian))
+
+		EDO.append(Edge(pixels[i], pixels[i-1], 255-int(euclidian)))
+
+
+'Create all the neighboring right edges as edges[3]'
+for i in range(len(pixels)):
+	if(i % w != (w-1)):
+		euclidian = math.sqrt( (pixels[i].getRed() - pixels[i+1].getRed()) ** 2 + (pixels[i].getGreen() - pixels[i+1].getGreen()) ** 2 + (pixels[i].getBlue() - pixels[i+1].getBlue()) ** 2 ) 
+		pixels[i].addEdge(Edge(pixels[i], pixels[i+1], 255-int(euclidian)))
+		pixels[i+1].bkEdge.append( Edge( pixels[i+1], pixels[i], 255-int(euclidian))
+
+		EDO.append(Edge(pixels[i], pixels[i+1], 255-int(euclidian)))
+
+'Create all the neighboring UP edges as edges[4]'
+for i in range(w, len(pixels)):
+	euclidian = math.sqrt( (pixels[i].getRed() - pixels[i-w].getRed()) ** 2 + (pixels[i].getGreen() - pixels[i-w].getGreen()) ** 2 + (pixels[i].getBlue() - pixels[i-w].getBlue()) ** 2 ) 
+	pixels[i].addEdge(Edge(pixels[i], pixels[i-w], 255-int(euclidian)))
+	pixels[i-w].bkEdge.append( Edge( pixels[i-w], pixels[i], 255-int(euclidian))
+
+	EDO.append(Edge(pixels[i], pixels[i-w], 255-int(euclidian)))
+	 
+'Create all the neighboring DOWN edges as edges[5]'
+for i in range(len(pixels)-w):
+	euclidian = math.sqrt( (pixels[i].getRed() - pixels[i+w].getRed()) ** 2 + (pixels[i].getGreen() - pixels[i+w].getGreen()) ** 2 + (pixels[i].getBlue() - pixels[i+w].getBlue()) ** 2 ) 
+	pixels[i].addEdge(Edge(pixels[i], pixels[i+w], 255-int(euclidian)))
+	pixels[i+w].bkEdge.append( Edge( pixels[i+w], pixels[i], 255-int(euclidian))
+
+	EDO.append(Edge(pixels[i], pixels[i+w], 255-int(euclidian)))
+
+
+
+
+def getPath(edge, delta, path):
+	path.append(edge)
+	if edge.p2 == -2:
+		return path
+
+	for e in edge.p2.edges:
+		if(e.forwardEdge > delta and not (e in path)):
+			return getPath(e, delta, path)
+	for e in edge.p2.bkedges:
+		if(e.backwardEdge > delta and not (e in path)):
+			return getPath(e, delta, path)
+
+	print(path) 
+
+def augment(path):
+	bottleneck = 255
+	for edge in path:
+		if edge.forwardEdge < bottleneck:
+			bottleneck = edge.forwardEdge
+		for edge in path:
+		if edge 
+			
+
+
+delta = 0
+for pixel in pixels:
+	if pixel.edges[0].capacity > delta:
+		delta = pixel.edges[0].capacity
+delta = ( 2**int(math.log(delta, 2)) - 1 )
+
+while delta >= 1:
+	path = getPath()
+	while path != None:
+		augment(path)
+		path = getPath()
+	delta = delta / 2
+
+
+
+
+
+
+
+#TESTING
+
+path = getPath(ED[0], 64, [])
+for e in path:
+	print str(e)
+#delete ED and EDO once finished.
+
+
