@@ -1,0 +1,5 @@
+-z -c -o"./Debug/loop_intr.out" -stack0x1000 -w -x -i"c:/CCStudio_v3.1/C6000/dsk6713/lib" -i"C:/CCStudio_v3.1/C6000/rtdx/lib" -i"C:/CCStudio_v3.1/C6000/csl/lib" -i"C:/CCStudio_v3.1/C6000/xdais/lib" -i"C:/CCStudio_v3.1/C6000/bios/lib" -i"C:/CCStudio_v3.1/C6000/cgtools/lib" -l"rts6700.lib" -l"dsk6713bsl.lib" -l"csl6713.lib"
+"C:\CCStudio_v3.1\CD_Example\C6713\Support\C6713dsk.cmd"
+"C:\CCStudio_v3.1\CD_Example\C6713\final project group 2\final project group 2\tremolo\Debug\c6713dskinit.obj"
+"C:\CCStudio_v3.1\CD_Example\C6713\final project group 2\final project group 2\tremolo\Debug\loop_intr.obj"
+"C:\CCStudio_v3.1\CD_Example\C6713\final project group 2\final project group 2\tremolo\Debug\Vectors_intr.obj"
